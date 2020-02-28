@@ -3,7 +3,6 @@ image: Visual Studio 2017
 clone_depth: 5
 install:
 - set REPODIR=%CD%
-- set /P RDM_VERSION=<version.txt
 - git clone -q --depth=5 --branch=2019 https://github.com/uglide/RedisDesktopManager.git C:\projects\redisdesktopmanager
 - set SRCDIR=C:\projects\RedisDesktopManager
 - cd %SRCDIR%
@@ -20,7 +19,7 @@ build_script:
 - 7z.exe x "%REPODIR%\deps.zip"
 - del /F qredisclient.lib
 - cd %SRCDIR%
-- python ./build/utils/set_version.py %RDM_VERSION% > ./src/version.h
+- python ./build/utils/set_version.py %APPVEYOR_BUILD_VERSION% > ./src/version.h
 - cd %SRCDIR%/3rdparty
 - nuget install zlib-msvc14-x64 -Version 1.2.11.7795
 - cd qredisclient/3rdparty/hiredis
@@ -42,6 +41,6 @@ build_script:
 - del /Q  .\imageformats\qwebp.dll
 - C:\Python37\python.exe -m pip install -t . -r %SRCDIR%/src/py/requirements.txt
 - cd %SRCDIR%
-- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%RDM_VERSION%.0.0 ./build/windows/installer/installer.nsi
+- call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%APPVEYOR_BUILD_VERSION% ./build/windows/installer/installer.nsi
 artifacts:
 - path: build/windows/installer/redis-desktop-manager-*.exe
