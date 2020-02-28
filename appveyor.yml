@@ -33,6 +33,8 @@ build_script:
 - cd %SRCDIR%
 - copy /y .\bin\windows\release\rdm.exe .\build\windows\installer\resources\rdm.exe
 - copy /y .\3rdparty\qredisclient\botan.dll .\build\windows\installer\resources\botan.dll
+- copy /y .\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\libcrypto-1_1.dll .\build\windows\installer\resources\libcrypto-1_1.dll	
+- copy /y .\3rdparty\qredisclient\3rdparty\windows\rmt_openssl.1.1.0.3\build\native\bin\v140\Win32\Release\dynamic\libssl-1_1.dll .\build\windows\installer\resources\libssl-1_1.dll	
 - 7z.exe x "%REPODIR%\python37-deps.zip" -o.\build\windows\installer\resources\
 - cd build/windows/installer/resources/
 - windeployqt --no-angle --no-opengl-sw --no-compiler-runtime --no-translations --release --force --qmldir %SRCDIR%/src/qml rdm.exe
@@ -44,18 +46,5 @@ build_script:
 - C:\Python37\python.exe -m pip install -t . -r %SRCDIR%/src/py/requirements.txt
 - cd %SRCDIR%
 - call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%RDM_VERSION%.0.0 ./build/windows/installer/installer.nsi
-- cd %APPVEYOR_BUILD_FOLDER%
-- 7z.exe a redis-desktop-manager-%RDM_VERSION%.zip  %SRCDIR%/build/windows/installer/redis-desktop-manager-%RDM_VERSION%.0.0.exe
 artifacts:
-- path: redis-desktop-manager-$(RDM_VERSION).zip
-deploy:
-  release: $(RDM_VERSION)
-  description: "[Thank you RedisDesktopManager](https://github.com/uglide/RedisDesktopManager/releases/tag/$(RDM_VERSION))"
-  provider: GitHub
-  auth_token:
-    secure: 3BFf8EhHwdlpCZJpwS8/8EizWPFKs9CJPYLL9RLaRZtNMtLWuVtAixRtZTogb0Af # your encrypted token from GitHub
-  artifact: redis-desktop-manager-$(RDM_VERSION).zip   # upload all NuGet packages to release assets
-  draft: false
-  prerelease: false
-  on:
-    branch: master                 # release from master branch only
+- path: build/windows/installer/redis-desktop-manager-*.exe
