@@ -42,7 +42,8 @@ build_script:
 - C:\Python37\python.exe -m pip install -t . -r %SRCDIR%/src/py/requirements.txt
 - cd %SRCDIR%
 - call "C:\\Program Files (x86)\\NSIS\\makensis.exe" /V1 /DVERSION=%APPVEYOR_BUILD_VERSION% ./build/windows/installer/installer.nsi
+- dir build\\windows\\installer
 - cd %APPVEYOR_BUILD_FOLDER%
-- copy /y %SRCDIR%/build/windows/installer/redis-desktop-manager-*.exe .\\
+- copy /y %SRCDIR%\\build\\windows\\installer\\redis-desktop-manager-*.exe .
 artifacts:
-- path: build/windows/installer/redis-desktop-manager-*.exe
+- path: redis-desktop-manager-*.exe
